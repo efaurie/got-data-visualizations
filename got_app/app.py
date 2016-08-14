@@ -2,6 +2,7 @@ import sys
 import logging
 
 from flask import Flask
+from flask import render_template
 
 from got_app.lib.data_access import GOTDataset
 
@@ -12,7 +13,7 @@ data = GOTDataset()
 
 @app.route('/')
 def index():
-    return 'Game Of Thrones Casualty Explorer'
+    return render_template('index.html')
 
 
 @app.route('/data/battles')
@@ -33,6 +34,11 @@ def get_locations():
 @app.route('/data/continents')
 def get_continents():
     return data.continents.to_json()
+
+
+@app.route('/data/political_regions')
+def get_political_regions():
+    return data.political_regions.to_json()
 
 
 def start_server():

@@ -40,4 +40,4 @@
 10. **CoK:** Appeared in second book
 11. **SoS:** Appeared in third book
 12. **FfC:** Appeared in fourth book
-13. **DwD: Appeared in fifth book
+13. **DwD:** Appeared in fifth book

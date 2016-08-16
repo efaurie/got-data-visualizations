@@ -40,8 +40,8 @@ text.big-text{
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
 
-var width = 960,
-    height = 500,
+var width = 1200,
+    height = 1000,
     centered;
 
 // Define color scale
@@ -51,9 +51,8 @@ var color = d3.scale.linear()
   .range(['#fff', '#409A99']);
 
 var projection = d3.geo.mercator()
-  .scale(1500)
-  // Center the Map in Colombia
-  .center([-74, 4.5])
+  .scale(750)
+  .center([13.24, 22.23])
   .translate([width / 2, height / 2]);
 
 var path = d3.geo.path()
@@ -91,8 +90,9 @@ var bigText = g.append('text')
   .attr('y', 45);
 
 // Load map data
-d3.json('data/political_regions', function(error, mapData) {
-  var features = mapData;
+d3.json('/data/political_regions', function(error, mapData) {
+  var features = mapData.features;
+  console.log(mapData);
 
   // Update color scale domain based on data
   color.domain([0, d3.max(features, nameLength)]);
@@ -277,7 +277,7 @@ function textArt(text){
     .attr('x', function(d){return d.x;})
     .attr('y', function(d){return d.y;});
 
-  // Create transtion to increase opacity from 0 to 0.1-0.5
+  // Create transition to increase opacity from 0 to 0.1-0.5
   // Add delay based on distance from the center of the <svg> and a bit more randomness.
   selection.transition()
     .delay(function(d){

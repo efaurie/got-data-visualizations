@@ -28,17 +28,17 @@ def get_character_deaths():
 
 @app.route('/data/locations')
 def get_locations():
-    return data.locations.to_json()
+    return data.locations_json
 
 
 @app.route('/data/continents')
 def get_continents():
-    return data.continents.to_json()
+    return data.continents_json
 
 
 @app.route('/data/political_regions')
 def get_political_regions():
-    return data.political_regions.to_json()
+    return data.political_regions_json
 
 
 def start_server():

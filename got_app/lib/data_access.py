@@ -12,11 +12,35 @@ class GOTDataset(object):
 
         self.battles = None
         self.character_deaths = None
-        self.continents = None
-        self.locations = None
-        self.political_regions = None
+        self._continents = None
+        self._locations = None
+        self._political_regions = None
 
         self._populate()
+
+    @property
+    def locations(self):
+        return self._get_dataframe_from_geojson(self._locations)
+
+    @property
+    def locations_json(self):
+        return self._locations
+
+    @property
+    def continents(self):
+        return self._get_dataframe_from_geojson(self._continents)
+
+    @property
+    def continents_json(self):
+        return self._continents
+
+    @property
+    def political_regions(self):
+        return self._get_dataframe_from_geojson(self._political_regions)
+
+    @property
+    def political_regions_json(self):
+        return self._political_regions
 
     def _populate(self):
         self._populate_battle_data()
@@ -29,10 +53,10 @@ class GOTDataset(object):
 
     def _populate_location_data(self):
         geojson_path = os.path.join(self.resources, 'location', 'geojson')
-        self.continents = self._get_dataframe_from_geojson(os.path.join(geojson_path, 'continents.geojson'))
-        self.locations = self._get_dataframe_from_geojson(os.path.join(geojson_path, 'locations.geojson'))
-        self.political_regions = self._get_dataframe_from_geojson(os.path.join(geojson_path,
-                                                                               'political_regions.geojson'))
+        self._continents = self._get_json(os.path.join(geojson_path, 'continents.geojson'))
+        self._locations = self._get_json(os.path.join(geojson_path, 'locations.geojson'))
+        self._political_regions = self._get_json(os.path.join(geojson_path,
+                                                             'political_regions.geojson'))
 
     def battles_with_locations(self):
         return self.battles.merge(self.locations, left_on='location', right_on='properties_name')
@@ -44,14 +68,17 @@ class GOTDataset(object):
         pass
 
     @classmethod
+    def _get_json(cls, geojson_uri):
+        with open(geojson_uri, 'r') as json_file:
+            return json_file.read()
+
+    @classmethod
     def _get_dataframe_from_csv(cls, csv_uri):
         return pd.DataFrame.from_csv(csv_uri)
 
     @classmethod
-    def _get_dataframe_from_geojson(cls, geojson_uri):
-        with open(geojson_uri, 'r') as json_file:
-            geo_json = json.load(json_file)
-
+    def _get_dataframe_from_geojson(cls, json_str):
+        geo_json = json.loads(json_str)
         flat_geo_json = list()
         for entry in geo_json['features']:
             flat_entry = dict()

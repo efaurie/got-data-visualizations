@@ -16,6 +16,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/word_map')
+def word_map():
+    return render_template('word_map.html')
+
+
 @app.route('/data/battles')
 def get_battles():
     return data.battles.to_json()
